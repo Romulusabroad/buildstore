@@ -2,6 +2,7 @@ import {
   Injectable,
   InternalServerErrorException,
   BadRequestException,
+  NotFoundException,
 } from '@nestjs/common';
 import { SupabaseService } from '../supabase/supabase.service';
 import { CreateSiteDto, UpdateSiteDto } from './dto/site.dto';
@@ -103,6 +104,10 @@ export class SitesService {
         .select('*')
         .eq('subdomain', domain)
         .single();
+        
+    if (!subData) {
+      throw new NotFoundException('Site not found');
+    }
         
     return subData;
   }
