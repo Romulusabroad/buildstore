@@ -97,7 +97,7 @@ export class SitesService {
     
     // For now, let's assume if it doesn't match custom_domain, we check if it is a subdomain
     // But we need to be careful.
-    
+
     // Simple look up for subdomain match
     const { data: subData } = await this.client
         .from('sites')
