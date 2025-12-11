@@ -82,24 +82,27 @@ export const NavBar = ({
 
       {/* Desktop Links with Hover Dropdown */}
       <div className="hidden @3xl:flex items-center gap-1">
-        {links.map((link, i) => (
+        {links.map((linkStr, i) => {
+          // Parse "Label=URL" or default to just Label and #
+          const [label, url] = linkStr.includes('=') ? linkStr.split('=') : [linkStr, '#'];
+          return (
           <div key={i} className="group relative">
             <a 
-                href="#" 
+                href={url.trim()} 
                 className={cn(
                     "block px-4 py-2 text-sm font-medium rounded-full transition-all",
                     "hover:bg-gray-100/50",
                     darkMode && "hover:bg-white/10"
                 )}
             >
-              {link}
+              {label.trim()}
             </a>
             
             {/* Dropdown Menu - Simplified Display Logic */}
             <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2 hidden group-hover:block z-50">
                 <div className="w-48 bg-white dark:bg-gray-900 rounded-xl shadow-xl border border-gray-100 dark:border-gray-800 p-2 animate-in fade-in slide-in-from-top-1 duration-200">
                     <div className="flex flex-col gap-1">
-                        {getSubLinks(link).map((sub, j) => (
+                        {getSubLinks(label.trim()).map((sub, j) => (
                             <a 
                                 key={j} 
                                 href="#" 
@@ -112,7 +115,8 @@ export const NavBar = ({
                 </div>
             </div>
           </div>
-        ))}
+          );
+        })}
       </div>
 
       {/* Actions */}
@@ -150,7 +154,7 @@ const NavBarSettings = () => {
       </div>
       
       <div className="space-y-2">
-         <label className="text-xs font-semibold text-gray-500 uppercase">Links (comma separated)</label>
+         <label className="text-xs font-semibold text-gray-500 uppercase">Links (Name=URL, comma separated)</label>
          <input
             type="text"
             value={props.links.join(', ')}

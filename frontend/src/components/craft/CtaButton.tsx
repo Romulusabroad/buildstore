@@ -10,6 +10,7 @@ export interface CtaButtonProps {
   icon?: string;
   fullWidth?: boolean;
   bgColor?: string;
+  href?: string;
 }
 
 const variantStyles = {
@@ -33,22 +34,28 @@ export const CtaButton = ({
   icon,
   fullWidth = false,
   bgColor,
+  href,
 }: CtaButtonProps) => {
   const { connectors: { connect, drag }, actions: { setProp } } = useNode();
 
   const IconComponent = icon ? (LucideIcons as any)[icon] : null;
+  const Component = href ? motion.a : motion.button;
 
   return (
-    <motion.button
-      ref={(ref) => { if (ref) connect(drag(ref)); }}
+    <Component
+      ref={(ref: any) => { if (ref) connect(drag(ref)); }}
+      href={href}
       className={cn(
         'inline-flex items-center justify-center gap-2 font-semibold rounded-lg transition-all duration-200',
         variantStyles[variant],
         sizeStyles[size],
-        fullWidth && 'w-full'
+        fullWidth && 'w-full',
+        'no-underline',
+        'cursor-pointer'
       )}
       style={variant === 'default' && bgColor ? { backgroundColor: bgColor } : undefined}
-      contentEditable={false}
+      contentEditable={false} // Important for links to work in read-only mode, but in editor we might need to prevent click?
+      // In editor enabled=true, links shouldn't navigate. Craft handles this usually.
       variants={{
         hidden: { opacity: 0, scale: 0.9 },
         visible: { opacity: 1, scale: 1, transition: { type: "spring", bounce: 0.4 } }
@@ -64,7 +71,7 @@ export const CtaButton = ({
       >
         {text}
       </span>
-    </motion.button>
+    </Component>
   );
 };
 
@@ -144,6 +151,18 @@ function CtaButtonSettings() {
              </button>
           </div>
       </div>
+
+       {/* URL Link */}
+       <div className="space-y-3">
+        <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Link URL</label>
+        <input
+          type="text"
+          value={props.href || ''}
+          onChange={(e) => setProp((p: CtaButtonProps) => p.href = e.target.value)}
+          placeholder="e.g. /about or https://google.com"
+          className="w-full px-3 py-2 border rounded-md text-sm"
+        />
+       </div>
 
        {/* Icon */}
        <div className="space-y-3">
