@@ -919,15 +919,17 @@ function App() {
 
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<MainLayout />}>
-           <Route index element={<Navigate to="/pages" replace />} />
-           <Route path="pages" element={<PageManager />} />
-           <Route path="design" element={<EditorContent />} />
-           <Route path="design/:pageId" element={<EditorContent />} />
-           <Route path="templates/:entityType/:slug" element={<DynamicTemplateRenderer entityType="product" />} />
-        </Route>
-      </Routes>
+      <Editor resolver={resolver}>
+        <Routes>
+          <Route path="/" element={<MainLayout />}>
+             <Route index element={<Navigate to="/pages" replace />} />
+             <Route path="pages" element={<PageManager />} />
+             <Route path="design" element={<EditorContent />} />
+             <Route path="design/:pageId" element={<EditorContent />} />
+             <Route path="templates/:entityType/:slug" element={<DynamicTemplateRenderer entityType="product" />} />
+          </Route>
+        </Routes>
+      </Editor>
     </BrowserRouter>
   );
 }
