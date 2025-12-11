@@ -910,7 +910,7 @@ function App() {
   // Domain Routing Logic: Synchronous check to avoid flash
   const hostname = window.location.hostname;
   const systemDomains = ['localhost', '127.0.0.1', 'app.buildstore.com', 'admin.buildstore.com'];
-  const isPublicDomain = !systemDomains.includes(hostname);
+  const isPublicDomain = !systemDomains.includes(hostname) && !hostname.includes('vercel.app');
 
   if (isPublicDomain) {
       console.log('[Domain Router] Detected Public Access:', hostname);

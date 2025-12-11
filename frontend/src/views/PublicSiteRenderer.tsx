@@ -64,18 +64,27 @@ export function PublicSiteRenderer({ domain }: PublicSiteRendererProps) {
                  const pagesRes = await fetch(`${API_BASE}/pages?siteId=${site.id}`);
                  const pages = await pagesRes.json();
                  
-                 // Strategy: Look for slug 'home', 'index', or take the first one.
-                 const homePage = pages.find((p: any) => p.slug === 'home' || p.slug === 'index' || p.slug === '/') || pages[0];
+                 // 2. Find Page by Slug
+                 const path = window.location.pathname;
+                 const slug = path === '/' ? 'home' : path.substring(1); // e.g. "/about" -> "about"
                  
-                 if (!homePage) {
-                     throw new Error('No published pages found for this site.');
+                 // Strategy: Look for specific slug first, then fallback to home if root, then first page
+                 let targetPage = pages.find((p: any) => p.slug === slug);
+                 
+                 // Fallback for root path if 'home' slug doesn't exist
+                 if (!targetPage && path === '/') {
+                      targetPage = pages.find((p: any) => p.slug === 'index' || p.slug === 'home') || pages[0];
                  }
                  
-                 if (!homePage.content || Object.keys(homePage.content).length === 0) {
-                      throw new Error('Home page is empty.');
+                 if (!targetPage) {
+                     throw new Error(`Page not found: /${slug}`);
+                 }
+                 
+                 if (!targetPage.content || Object.keys(targetPage.content).length === 0) {
+                      throw new Error('Page content is empty.');
                  }
 
-                 setPageContent(homePage.content);
+                 setPageContent(targetPage.content);
 
              } catch(err: any) {
                  console.error('Public Render Error:', err);
