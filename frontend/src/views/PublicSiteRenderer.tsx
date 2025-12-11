@@ -121,7 +121,7 @@ export function PublicSiteRenderer({ domain }: PublicSiteRendererProps) {
     );
 
     return (
-         <div className="w-full min-h-screen bg-white">
+         <div className="w-full min-h-screen bg-white @container">
              {/* Read-Only Craft Editor */}
              <Editor resolver={resolver} enabled={false}>
                  <Frame json={pageContent} />
