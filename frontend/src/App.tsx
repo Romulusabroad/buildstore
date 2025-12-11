@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route, Navigate, useParams } from 'react-router-
 import { MainLayout } from './components/MainLayout';
 import { PageManager } from './views/PageManager';
 import { DynamicTemplateRenderer } from './views/DynamicTemplateRenderer';
-import { Frame, Element, useEditor } from '@craftjs/core';
+import { Frame, Element, useEditor, Editor } from '@craftjs/core';
 // Legacy components (backward compat)
 import { Container } from './components/user/Container';
 import { Text } from './components/user/Text';
