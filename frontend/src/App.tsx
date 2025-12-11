@@ -923,7 +923,8 @@ function App() {
         <Route path="/" element={<MainLayout />}>
            <Route index element={<Navigate to="/pages" replace />} />
            <Route path="pages" element={<PageManager />} />
-           <Route path="editor/:pageId" element={<EditorContent />} />
+           <Route path="design" element={<EditorContent />} />
+           <Route path="design/:pageId" element={<EditorContent />} />
            <Route path="templates/:entityType/:slug" element={<DynamicTemplateRenderer entityType="product" />} />
         </Route>
       </Routes>
